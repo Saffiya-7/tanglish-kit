@@ -1,0 +1,33 @@
+# Hand-labelled code-mixed sentences for evaluation. Each token is word/T
+# (Tanglish) or word/E (English). Words from these sentences are excluded from
+# training when measuring sentence-level accuracy.
+machan/T meeting/E cancel/E aagiduchu/T
+naalaiku/T exam/E iruku/T padichiya/T
+office/E ku/T late/E aagiduchu/T da/T
+indha/T movie/E semma/T mass/E
+nee/T call/E pannu/T please/E
+enaku/T salary/E innum/T varala/T
+bus/E stand/E la/T wait/E panren/T
+weekend/E party/E ku/T varriya/T
+project/E deadline/E romba/T tight/E ah/T irukku/T
+lunch/E saaptiya/T illaya/T
+anna/T oru/T doubt/E kekalama/T
+phone/E charge/E illa/T switch/E off/E aagidum/T
+seri/T seri/T tomorrow/E morning/E pesalam/T
+traffic/E la/T maatikiten/T sorry/E
+vanakkam/T friends/E inniki/T oru/T new/E video/E
+interview/E nalla/T pochu/T thanks/E
+naan/T already/E reached/E da/T
+unga/T address/E konjam/T send/E pannunga/T
+avan/T exam/E la/T fail/E aayitan/T
+nethu/T match/E paathiya/T semma/T finish/E
+code/E la/T bug/E irukku/T fix/E pannanum/T
+ticket/E book/E panniya/T illa/T naane/T panniduren/T
+amma/T dinner/E ready/E aa/T
+enna/T problem/E unaku/T
+sema/T happy/E ah/T irukken/T
+leave/E apply/E pannalama/T boss/E ku/T
+class/E cancel/E nu/T sonnanga/T
+indha/T song/E ennoda/T favourite/E
+thambi/T birthday/E ku/T gift/E vaanganum/T
+online/E la/T order/E panna/T cheap/E ah/T kidaikum/T

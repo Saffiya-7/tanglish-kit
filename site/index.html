@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>tanglish-kit — Tamil & Tanglish toolkit</title>
+  <meta name="description" content="Type Tanglish, get Tamil. Phonetic transliteration, romanization, code-mixed language detection and Tamil letter analysis — open source, runs entirely in your browser." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav">
+      <span class="logo">tanglish<span class="dot">·</span>kit</span>
+      <a class="gh" id="gh-link" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </nav>
+    <h1>Type Tanglish.<br /><span class="ta">தமிழ்</span> comes out.</h1>
+    <p class="lede">
+      An open-source toolkit for Tamil and code-mixed Tanglish text: phonetic transliteration,
+      reversible romanization, word-level language detection and Tamil letter analysis.
+      Zero dependencies. Everything on this page runs in your browser.
+    </p>
+    <div class="install"><code id="install-cmd">npm install github:Saffiya-7/tanglish-kit</code></div>
+    <ul class="stats" id="stats"></ul>
+  </header>
+
+  <main>
+    <div class="tabs" role="tablist">
+      <button role="tab" class="tab active" data-tab="t2t" aria-selected="true">Tanglish → தமிழ்</button>
+      <button role="tab" class="tab" data-tab="t2r" aria-selected="false">தமிழ் → Tanglish</button>
+      <button role="tab" class="tab" data-tab="letters" aria-selected="false">Letter analyzer</button>
+    </div>
+
+    <!-- Tanglish → Tamil -->
+    <section class="panel active" id="panel-t2t" role="tabpanel">
+      <div class="grid">
+        <div class="pane">
+          <label for="in-t2t">Tanglish</label>
+          <textarea id="in-t2t" spellcheck="false" autocomplete="off">vanakkam nanba! epdi irukeenga? naalaiku office la meeting cancel aachu, so namma kovil ku polama?</textarea>
+          <div class="opts">
+            <label class="check"><input type="checkbox" id="opt-english" checked /> Keep English words</label>
+            <label class="check"><input type="checkbox" id="opt-numerals" /> Tamil numerals</label>
+            <label class="check"><input type="checkbox" id="opt-lexicon" checked /> Use lexicon</label>
+          </div>
+        </div>
+        <div class="pane">
+          <label>தமிழ் <button class="copy" data-copy="out-t2t">Copy</button></label>
+          <div class="output ta" id="out-t2t" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="tagbox">
+        <div class="tagbox-head">
+          <span>Word-level language detection</span>
+          <span class="legend"><i class="lg tanglish"></i>Tanglish <i class="lg en"></i>English <i class="lg tamil"></i>Tamil</span>
+        </div>
+        <div class="chips" id="chips"></div>
+        <p class="hint">Character n-gram Naive Bayes + neighbour smoothing. Hover a word to see confidence.</p>
+      </div>
+      <details class="cheats">
+        <summary>Typing cheatsheet</summary>
+        <table>
+          <tr><th>Type</th><th>Get</th><th>Example</th></tr>
+          <tr><td>aa / ee / oo</td><td>ஆ ஈ ஊ</td><td>paal → பால், nee → நீ, poo → பூ</td></tr>
+          <tr><td>E / O</td><td>ஏ ஓ</td><td>vEnum → வேனும், Odu → ஓடு</td></tr>
+          <tr><td>zh</td><td>ழ</td><td>thamizh → தமிழ்</td></tr>
+          <tr><td>N / L / R</td><td>ண ள ற</td><td>kaNNu → கண்ணு, paLLi → பள்ளி</td></tr>
+          <tr><td>ng / nj / ndh / nd</td><td>ங்க ஞ்ச ந்த ண்ட</td><td>enga, manjal, vandhu, rendu</td></tr>
+          <tr><td>tr / ndr</td><td>ற்ற ன்ற</td><td>kaatru → காற்று, nandri → நன்றி</td></tr>
+          <tr><td>S / sh / j / h</td><td>ஸ ஷ ஜ ஹ</td><td>Sree → ஸ்ரீ, kashtam → கஷ்டம்</td></tr>
+        </table>
+      </details>
+    </section>
+
+    <!-- Tamil → Tanglish -->
+    <section class="panel" id="panel-t2r" role="tabpanel" hidden>
+      <div class="grid">
+        <div class="pane">
+          <label for="in-t2r">தமிழ்</label>
+          <textarea id="in-t2r" class="ta" spellcheck="false">யாதும் ஊரே யாவரும் கேளிர். தீதும் நன்றும் பிறர் தர வாரா.</textarea>
+          <div class="opts">
+            <label class="check"><input type="radio" name="style" value="casual" checked /> Casual (how people type)</label>
+            <label class="check"><input type="radio" name="style" value="precise" /> Precise (reversible)</label>
+          </div>
+        </div>
+        <div class="pane">
+          <label>Tanglish <button class="copy" data-copy="out-t2r">Copy</button></label>
+          <div class="output mono" id="out-t2r" aria-live="polite"></div>
+          <p class="hint" id="roundtrip"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Letters -->
+    <section class="panel" id="panel-letters" role="tabpanel" hidden>
+      <div class="pane">
+        <label for="in-letters">தமிழ் text <span class="muted" id="len-note"></span></label>
+        <textarea id="in-letters" class="ta short" spellcheck="false">க்ஷேத்திரம் ஸ்ரீ தமிழ்</textarea>
+      </div>
+      <div class="tiles" id="tiles"></div>
+      <div class="legend letters-legend">
+        <i class="lg uyir"></i>உயிர் vowel <i class="lg mei"></i>மெய் consonant <i class="lg uyirmei"></i>உயிர்மெய் <i class="lg aytham"></i>ஆய்தம்
+      </div>
+      <ul class="statgrid" id="statgrid"></ul>
+    </section>
+  </main>
+
+  <section class="code">
+    <h2>Use it in code</h2>
+<pre><code><span class="k">import</span> { tanglishToTamil, tamilToTanglish, tagWords, splitLetters } <span class="k">from</span> <span class="s">'tanglish-kit'</span>;
+
+tanglishToTamil(<span class="s">'vanakkam nanba'</span>);                 <span class="c">// 'வணக்கம் நண்பா'</span>
+tanglishToTamil(<span class="s">'meeting cancel aachu'</span>, { keepEnglish: <span class="k">true</span> });
+                                                  <span class="c">// 'meeting cancel ஆச்சு'</span>
+tamilToTanglish(<span class="s">'நன்றி'</span>);                          <span class="c">// 'nandri'</span>
+tagWords(<span class="s">'office ku late'</span>).map(t =&gt; t.lang);       <span class="c">// ['en', 'tanglish', 'en']</span>
+splitLetters(<span class="s">'தமிழ்'</span>);                              <span class="c">// ['த', 'மி', 'ழ்']  (not 5!)</span></code></pre>
+    <p>Also a CLI: <code>tanglish "vanakkam"</code> · <code>-r</code> reverse · <code>-t</code> tag words · <code>-l</code> letters · <code>-e</code> keep English</p>
+  </section>
+
+  <footer>
+    MIT licensed · Built for the Tamil internet · <a id="gh-link-2" href="#" target="_blank" rel="noopener">Contribute on GitHub</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "englishWords": 606,
+  "tanglishWords": 521,
+  "features": 5457,
+  "wordHoldout": {
+    "words": 214,
+    "accuracy": 0.9766
+  },
+  "sentences": {
+    "tokens": 139,
+    "accuracyNoContext": 0.9712,
+    "accuracyWithContext": 0.9928
+  }
+}
