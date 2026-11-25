@@ -116,6 +116,7 @@ export const LEXICON: Readonly<Record<string, string>> = {
   kutty: 'குட்டி',
 
   // particles & exclamations
+  ah: 'ஆ', // question/emphasis particle: "tight ah", "nijama ah?"
   da: 'டா',
   di: 'டி',
   dei: 'டேய்',

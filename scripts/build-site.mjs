@@ -12,7 +12,7 @@ const serve = process.argv.includes('--serve');
 
 rmSync(out, { recursive: true, force: true });
 mkdirSync(out, { recursive: true });
-for (const file of ['index.html', 'style.css', 'favicon.svg']) {
+for (const file of ['index.html', 'style.css', 'favicon.svg', 'og.jpg']) {
   cpSync(join(root, 'site', file), join(out, file));
 }
 

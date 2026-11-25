@@ -1,132 +1,380 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>tanglish-kit — Tamil & Tanglish toolkit</title>
-  <meta name="description" content="Type Tanglish, get Tamil. Phonetic transliteration, romanization, code-mixed language detection and Tamil letter analysis — open source, runs entirely in your browser." />
+  <title>tanglish-kit · Tamil NLP for the way people actually type</title>
+  <meta name="description" content="Open-source toolkit for Tamil and code-mixed Tanglish: phonetic transliteration, reversible romanization, word-level language detection and Tamil letter analysis. Zero dependencies, runs in your browser." />
+  <meta name="theme-color" content="#ea580c" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="tanglish-kit · Tamil NLP for the way people actually type" />
+  <meta property="og:description" content="Type Tanglish, get தமிழ். Code-mixed language detection, reversible romanization and Tamil letter analysis. Open source, zero dependencies." />
+  <meta property="og:url" content="https://comfy-puppy-3e5a16.netlify.app/" />
+  <meta property="og:image" content="https://comfy-puppy-3e5a16.netlify.app/og.jpg" />
+  <meta property="og:image:width" content="800" />
+  <meta property="og:image:height" content="420" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script>
+    // Apply the saved/system theme before first paint to avoid a flash.
+    (function () {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
 </head>
 <body>
-  <header class="hero">
-    <nav class="nav">
-      <span class="logo">tanglish<span class="dot">·</span>kit</span>
-      <a class="gh" id="gh-link" href="#" target="_blank" rel="noopener">
-        <svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        GitHub
+  <a class="skip" href="#playground">Skip to playground</a>
+
+  <!-- ============ NAV ============ -->
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top" aria-label="tanglish-kit home">
+        <span class="mark" aria-hidden="true">த</span>
+        <span class="brand-name">tanglish-kit</span>
+        <span class="pill pill-muted">v0.1</span>
       </a>
-    </nav>
-    <h1>Type Tanglish.<br /><span class="ta">தமிழ்</span> comes out.</h1>
-    <p class="lede">
-      An open-source toolkit for Tamil and code-mixed Tanglish text: phonetic transliteration,
-      reversible romanization, word-level language detection and Tamil letter analysis.
-      Zero dependencies. Everything on this page runs in your browser.
-    </p>
-    <div class="install"><code id="install-cmd">npm install github:Saffiya-7/tanglish-kit</code></div>
-    <ul class="stats" id="stats"></ul>
+      <nav class="nav-links" aria-label="Main">
+        <a href="#playground">Playground</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#docs">Docs</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+        </button>
+        <a class="btn btn-ghost btn-sm gh-link" href="https://github.com/Saffiya-7/tanglish-kit" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+          <span>Star</span>
+          <span class="star-count" id="star-count" hidden></span>
+        </a>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <div class="tabs" role="tablist">
-      <button role="tab" class="tab active" data-tab="t2t" aria-selected="true">Tanglish → தமிழ்</button>
-      <button role="tab" class="tab" data-tab="t2r" aria-selected="false">தமிழ் → Tanglish</button>
-      <button role="tab" class="tab" data-tab="letters" aria-selected="false">Letter analyzer</button>
-    </div>
-
-    <!-- Tanglish → Tamil -->
-    <section class="panel active" id="panel-t2t" role="tabpanel">
-      <div class="grid">
-        <div class="pane">
-          <label for="in-t2t">Tanglish</label>
-          <textarea id="in-t2t" spellcheck="false" autocomplete="off">vanakkam nanba! epdi irukeenga? naalaiku office la meeting cancel aachu, so namma kovil ku polama?</textarea>
-          <div class="opts">
-            <label class="check"><input type="checkbox" id="opt-english" checked /> Keep English words</label>
-            <label class="check"><input type="checkbox" id="opt-numerals" /> Tamil numerals</label>
-            <label class="check"><input type="checkbox" id="opt-lexicon" checked /> Use lexicon</label>
+  <main id="top">
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <span class="pill pill-accent"><span class="dot-live"></span> Open source · MIT · Zero dependencies</span>
+          <h1>Tamil NLP for the way people <em>actually</em> type.</h1>
+          <p class="lede">
+            Millions of people write Tamil in English letters, mixed with English words.
+            <strong>tanglish-kit</strong> converts it to <span class="ta">தமிழ்</span>, tells the languages apart word by word,
+            and counts Tamil letters correctly. It's tiny, typed, and runs entirely in the browser.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#playground">Try the playground
+              <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M10 4v12M5 11l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+            <a class="btn btn-ghost" href="#docs">Read the docs</a>
+          </div>
+          <div class="install">
+            <code><span class="prompt">$</span> <span id="install-cmd">npm install github:Saffiya-7/tanglish-kit</span></code>
+            <button class="icon-btn copy-btn" data-copy-from="install-cmd" aria-label="Copy install command" title="Copy">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            </button>
           </div>
         </div>
-        <div class="pane">
-          <label>தமிழ் <button class="copy" data-copy="out-t2t">Copy</button></label>
-          <div class="output ta" id="out-t2t" aria-live="polite"></div>
-        </div>
-      </div>
-      <div class="tagbox">
-        <div class="tagbox-head">
-          <span>Word-level language detection</span>
-          <span class="legend"><i class="lg tanglish"></i>Tanglish <i class="lg en"></i>English <i class="lg tamil"></i>Tamil</span>
-        </div>
-        <div class="chips" id="chips"></div>
-        <p class="hint">Character n-gram Naive Bayes + neighbour smoothing. Hover a word to see confidence.</p>
-      </div>
-      <details class="cheats">
-        <summary>Typing cheatsheet</summary>
-        <table>
-          <tr><th>Type</th><th>Get</th><th>Example</th></tr>
-          <tr><td>aa / ee / oo</td><td>ஆ ஈ ஊ</td><td>paal → பால், nee → நீ, poo → பூ</td></tr>
-          <tr><td>E / O</td><td>ஏ ஓ</td><td>vEnum → வேனும், Odu → ஓடு</td></tr>
-          <tr><td>zh</td><td>ழ</td><td>thamizh → தமிழ்</td></tr>
-          <tr><td>N / L / R</td><td>ண ள ற</td><td>kaNNu → கண்ணு, paLLi → பள்ளி</td></tr>
-          <tr><td>ng / nj / ndh / nd</td><td>ங்க ஞ்ச ந்த ண்ட</td><td>enga, manjal, vandhu, rendu</td></tr>
-          <tr><td>tr / ndr</td><td>ற்ற ன்ற</td><td>kaatru → காற்று, nandri → நன்றி</td></tr>
-          <tr><td>S / sh / j / h</td><td>ஸ ஷ ஜ ஹ</td><td>Sree → ஸ்ரீ, kashtam → கஷ்டம்</td></tr>
-        </table>
-      </details>
-    </section>
 
-    <!-- Tamil → Tanglish -->
-    <section class="panel" id="panel-t2r" role="tabpanel" hidden>
-      <div class="grid">
-        <div class="pane">
-          <label for="in-t2r">தமிழ்</label>
-          <textarea id="in-t2r" class="ta" spellcheck="false">யாதும் ஊரே யாவரும் கேளிர். தீதும் நன்றும் பிறர் தர வாரா.</textarea>
-          <div class="opts">
-            <label class="check"><input type="radio" name="style" value="casual" checked /> Casual (how people type)</label>
-            <label class="check"><input type="radio" name="style" value="precise" /> Precise (reversible)</label>
+        <div class="hero-demo" aria-label="Live example">
+          <div class="window">
+            <div class="window-bar"><i></i><i></i><i></i><span>live: typed by the library, not a video</span></div>
+            <div class="window-body">
+              <div class="demo-label">Tanglish</div>
+              <div class="demo-in" id="hero-in"><span class="caret"></span></div>
+              <div class="demo-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="demo-label">தமிழ் · English kept as-is</div>
+              <div class="demo-out ta" id="hero-out"></div>
+              <div class="demo-tags" id="hero-tags"></div>
+            </div>
           </div>
         </div>
-        <div class="pane">
-          <label>Tanglish <button class="copy" data-copy="out-t2r">Copy</button></label>
-          <div class="output mono" id="out-t2r" aria-live="polite"></div>
-          <p class="hint" id="roundtrip"></p>
-        </div>
+      </div>
+
+      <div class="wrap">
+        <ul class="metrics" id="metrics"></ul>
       </div>
     </section>
 
-    <!-- Letters -->
-    <section class="panel" id="panel-letters" role="tabpanel" hidden>
-      <div class="pane">
-        <label for="in-letters">தமிழ் text <span class="muted" id="len-note"></span></label>
-        <textarea id="in-letters" class="ta short" spellcheck="false">க்ஷேத்திரம் ஸ்ரீ தமிழ்</textarea>
+    <!-- ============ PLAYGROUND ============ -->
+    <section class="section" id="playground">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Playground</span>
+          <h2>Try it on your own text</h2>
+          <p>Everything runs locally in your browser. Nothing you type leaves this page.</p>
+        </div>
+
+        <div class="card playground">
+          <div class="pg-top">
+            <div class="segmented" role="tablist" aria-label="Mode">
+              <button role="tab" class="seg active" data-mode="t2t" aria-selected="true" aria-controls="panel-t2t">Tanglish → <span class="ta">தமிழ்</span></button>
+              <button role="tab" class="seg" data-mode="t2r" aria-selected="false" aria-controls="panel-t2r"><span class="ta">தமிழ்</span> → Tanglish</button>
+              <button role="tab" class="seg" data-mode="letters" aria-selected="false" aria-controls="panel-letters">Letter analyzer</button>
+            </div>
+            <div class="examples" id="examples" aria-label="Examples"></div>
+          </div>
+
+          <!-- Tanglish → Tamil -->
+          <div class="pg-panel" id="panel-t2t" role="tabpanel">
+            <div class="io">
+              <div class="io-col">
+                <div class="io-head">
+                  <span>Tanglish</span>
+                  <button class="link-btn" data-clear="in-t2t">Clear</button>
+                </div>
+                <textarea id="in-t2t" spellcheck="false" autocomplete="off" aria-label="Tanglish input" placeholder="Type Tanglish here… e.g. vanakkam nanba"></textarea>
+              </div>
+              <button class="swap" id="swap-t2t" aria-label="Send output to the Tamil → Tanglish tab" title="Reverse direction">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="io-col">
+                <div class="io-head">
+                  <span class="ta">தமிழ்</span>
+                  <button class="link-btn copy-btn" data-copy-from="out-t2t">Copy</button>
+                </div>
+                <div class="output ta" id="out-t2t" aria-live="polite"></div>
+              </div>
+            </div>
+            <div class="pg-options">
+              <label class="switch"><input type="checkbox" id="opt-english" checked /><span class="track"></span> Keep English words</label>
+              <label class="switch"><input type="checkbox" id="opt-lexicon" checked /><span class="track"></span> Use lexicon</label>
+              <label class="switch"><input type="checkbox" id="opt-numerals" /><span class="track"></span> Tamil numerals</label>
+              <span class="pg-meta" id="meta-t2t"></span>
+            </div>
+            <div class="tagbar">
+              <div class="tagbar-head">
+                <span>Word-level language detection</span>
+                <span class="legend"><i class="sw sw-ta"></i>Tanglish <i class="sw sw-en"></i>English <i class="sw sw-tamil"></i>Tamil</span>
+              </div>
+              <div class="chips" id="chips"></div>
+            </div>
+            <details class="cheats">
+              <summary>Typing cheatsheet</summary>
+              <div class="cheat-grid">
+                <div><kbd>aa</kbd> <kbd>ee</kbd> <kbd>oo</kbd><span class="ta">ஆ ஈ ஊ</span><small>paal, nee, poo</small></div>
+                <div><kbd>E</kbd> <kbd>O</kbd><span class="ta">ஏ ஓ</span><small>Eri, Odu</small></div>
+                <div><kbd>zh</kbd><span class="ta">ழ</span><small>thamizh</small></div>
+                <div><kbd>N</kbd> <kbd>L</kbd> <kbd>R</kbd><span class="ta">ண ள ற</span><small>kaNNu, paLLi</small></div>
+                <div><kbd>ng</kbd> <kbd>nj</kbd><span class="ta">ங்க ஞ்ச</span><small>enga, konjam</small></div>
+                <div><kbd>ndh</kbd> <kbd>nd</kbd><span class="ta">ந்த ண்ட</span><small>vandhu, rendu</small></div>
+                <div><kbd>tr</kbd> <kbd>ndr</kbd><span class="ta">ற்ற ன்ற</span><small>kaatru, nandri</small></div>
+                <div><kbd>S</kbd> <kbd>sh</kbd> <kbd>j</kbd> <kbd>h</kbd><span class="ta">ஸ ஷ ஜ ஹ</span><small>Sree, kashtam</small></div>
+              </div>
+            </details>
+          </div>
+
+          <!-- Tamil → Tanglish -->
+          <div class="pg-panel" id="panel-t2r" role="tabpanel" hidden>
+            <div class="io">
+              <div class="io-col">
+                <div class="io-head">
+                  <span class="ta">தமிழ்</span>
+                  <button class="link-btn" data-clear="in-t2r">Clear</button>
+                </div>
+                <textarea id="in-t2r" class="ta" spellcheck="false" aria-label="Tamil input" placeholder="தமிழில் எழுதுங்கள்…"></textarea>
+              </div>
+              <button class="swap" id="swap-t2r" aria-label="Send output to the Tanglish → Tamil tab" title="Reverse direction">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="io-col">
+                <div class="io-head">
+                  <span>Tanglish</span>
+                  <button class="link-btn copy-btn" data-copy-from="out-t2r">Copy</button>
+                </div>
+                <div class="output mono" id="out-t2r" aria-live="polite"></div>
+              </div>
+            </div>
+            <div class="pg-options">
+              <div class="radio-group" role="radiogroup" aria-label="Romanization style">
+                <label class="radio"><input type="radio" name="style" value="casual" checked /> Casual <small>how people type</small></label>
+                <label class="radio"><input type="radio" name="style" value="precise" /> Precise <small>reversible</small></label>
+              </div>
+              <span class="pg-meta" id="meta-t2r"></span>
+            </div>
+          </div>
+
+          <!-- Letters -->
+          <div class="pg-panel" id="panel-letters" role="tabpanel" hidden>
+            <div class="io-col">
+              <div class="io-head">
+                <span class="ta">தமிழ் text</span>
+                <span class="pg-meta" id="meta-letters"></span>
+              </div>
+              <textarea id="in-letters" class="ta short" spellcheck="false" aria-label="Tamil text to analyze"></textarea>
+            </div>
+            <div class="tiles" id="tiles"></div>
+            <div class="legend tiles-legend"><i class="sw sw-tamil"></i>உயிர் vowel <i class="sw sw-en"></i>மெய் consonant <i class="sw sw-ta"></i>உயிர்மெய் <i class="sw sw-ay"></i>ஆய்தம்</div>
+            <ul class="statgrid" id="statgrid"></ul>
+          </div>
+        </div>
       </div>
-      <div class="tiles" id="tiles"></div>
-      <div class="legend letters-legend">
-        <i class="lg uyir"></i>உயிர் vowel <i class="lg mei"></i>மெய் consonant <i class="lg uyirmei"></i>உயிர்மெய் <i class="lg aytham"></i>ஆய்தம்
+    </section>
+
+    <!-- ============ FEATURES ============ -->
+    <section class="section section-alt" id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Features</span>
+          <h2>Everything Tamil text pipelines usually get wrong</h2>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <div class="f-icon"><span class="ta">அ</span></div>
+            <h3>Phonetic transliteration</h3>
+            <p>Context rules for ந/ன/ண, ங்க, ஞ்ச, ற்ற and glides, plus a lexicon of common chat words: <code>vanakkam → வணக்கம்</code>.</p>
+          </article>
+          <article class="feature">
+            <div class="f-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 7h7M4 12h11M4 17h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="18" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
+            <h3>Code-mix aware</h3>
+            <p>A trained model tags each word as Tanglish, English or Tamil, so <code>meeting cancel aachu</code> keeps the English intact.</p>
+          </article>
+          <article class="feature">
+            <div class="f-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M7 7h11l-3-3M17 17H6l3 3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>Reversible romanization</h3>
+            <p>Casual output that reads like real Tanglish, or a precise scheme that converts back to exactly the same Tamil text.</p>
+          </article>
+          <article class="feature">
+            <div class="f-icon"><span class="ta">மி</span></div>
+            <h3>Letter-correct counting</h3>
+            <p><code>"தமிழ்".length</code> is 5, but it has 3 letters. Split, count and classify உயிர் / மெய் / உயிர்மெய் properly.</p>
+          </article>
+          <article class="feature">
+            <div class="f-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3l8 4v10l-8 4-8-4V7z M4 7l8 4 8-4 M12 11v10" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></div>
+            <h3>Tiny &amp; offline</h3>
+            <p>Zero runtime dependencies. The whole library, model included, is 77 KB minified (24 KB gzipped), and it needs no server or API key.</p>
+          </article>
+          <article class="feature">
+            <div class="f-icon"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 17l6-5-6-5M12 19h8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <h3>TypeScript + CLI</h3>
+            <p>Fully typed API for Node and browsers, plus a <code>tanglish</code> command for scripts and piping files.</p>
+          </article>
+        </div>
       </div>
-      <ul class="statgrid" id="statgrid"></ul>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section" id="how">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">How it works</span>
+          <h2>A small, honest model, measured</h2>
+          <p>No black box: a character n-gram Naive Bayes classifier you can retrain with one command.</p>
+        </div>
+        <ol class="pipeline">
+          <li><span class="step">1</span><h3>Tokenize</h3><p>Split into Latin, Tamil-script, number and punctuation runs, keeping offsets.</p><code class="ex">office ku late</code></li>
+          <li><span class="step">2</span><h3>Score each word</h3><p>Character 1–4-grams (<code>^ku</code>, <code>ce$</code>…) go through Naive Bayes to get Tanglish-vs-English log-odds.</p><code class="ex" id="ex-scores">…</code></li>
+          <li><span class="step">3</span><h3>Smooth with context</h3><p>Languages switch in runs, so uncertain short words lean toward their neighbours.</p><code class="ex" id="ex-tags">…</code></li>
+          <li><span class="step">4</span><h3>Transliterate</h3><p>Tanglish words go through the lexicon, then the phonetic rules. English is left as-is.</p><code class="ex ta" id="ex-out">…</code></li>
+        </ol>
+        <div class="eval card">
+          <div class="eval-numbers" id="eval-numbers"></div>
+          <p class="eval-note">
+            Sentence accuracy is measured on hand-labelled code-mixed sentences after removing every one of their words
+            from training. The data set is small (about 1,100 words), so treat these as rough numbers.
+            <a href="https://github.com/Saffiya-7/tanglish-kit/tree/main/data" target="_blank" rel="noopener">See the data →</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ DOCS ============ -->
+    <section class="section section-alt" id="docs">
+      <div class="wrap docs-grid">
+        <div>
+          <div class="section-head left">
+            <span class="eyebrow">Docs</span>
+            <h2>Up and running in a minute</h2>
+            <p>Install from GitHub, import what you need. Types are included.</p>
+          </div>
+          <table class="api">
+            <thead><tr><th>Function</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code>tanglishToTamil(text, opts?)</code></td><td>Tanglish → Tamil script</td></tr>
+              <tr><td><code>tamilToTanglish(text, opts?)</code></td><td>Tamil → Tanglish, casual or precise</td></tr>
+              <tr><td><code>tagWords(text)</code></td><td>Per-word language + confidence + offsets</td></tr>
+              <tr><td><code>detectLanguage(text)</code></td><td>Language shares, dominant, code-mixed?</td></tr>
+              <tr><td><code>splitLetters(text)</code></td><td>Real Tamil letters (graphemes)</td></tr>
+              <tr><td><code>analyzeText(text)</code></td><td>Letter-type statistics</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="code-card">
+          <div class="code-tabs" role="tablist" aria-label="Code examples">
+            <button role="tab" class="code-tab active" data-code="js" aria-selected="true">JavaScript</button>
+            <button role="tab" class="code-tab" data-code="cli" aria-selected="false">CLI</button>
+            <button class="link-btn copy-btn code-copy" data-copy-from-active="code" aria-label="Copy code">Copy</button>
+          </div>
+<pre class="code" data-code-panel="js"><code><span class="k">import</span> { tanglishToTamil, tamilToTanglish, tagWords } <span class="k">from</span> <span class="s">'tanglish-kit'</span>;
+
+tanglishToTamil(<span class="s">'vanakkam nanba'</span>);
+<span class="c">// → 'வணக்கம் நண்பா'</span>
+
+tanglishToTamil(<span class="s">'meeting cancel aachu'</span>, { keepEnglish: <span class="k">true</span> });
+<span class="c">// → 'meeting cancel ஆச்சு'</span>
+
+tamilToTanglish(<span class="s">'நன்றி'</span>);
+<span class="c">// → 'nandri'</span>
+
+tagWords(<span class="s">'office ku late'</span>).map((t) =&gt; t.lang);
+<span class="c">// → ['en', 'tanglish', 'en']</span></code></pre>
+<pre class="code" data-code-panel="cli" hidden><code><span class="c"># Tanglish → Tamil</span>
+tanglish <span class="s">"vanakkam nanba"</span>
+
+<span class="c"># Tamil → Tanglish (add -p for precise)</span>
+tanglish -r <span class="s">"நன்றி"</span>
+
+<span class="c"># keep English words</span>
+tanglish -e <span class="s">"meeting cancel aachu"</span>
+
+<span class="c"># tag words, or convert a whole file</span>
+tanglish -t <span class="s">"office ku late"</span>
+cat chat.txt | tanglish &gt; chat.ta.txt</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CTA ============ -->
+    <section class="section">
+      <div class="wrap">
+        <div class="cta-band">
+          <div>
+            <h2>Help build better Tamil NLP</h2>
+            <p>Add words the rules get wrong, label code-mixed sentences, or port it to Python. Every contribution improves the model for everyone.</p>
+          </div>
+          <div class="cta-row">
+            <a class="btn btn-light" href="https://github.com/Saffiya-7/tanglish-kit" target="_blank" rel="noopener">★ Star on GitHub</a>
+            <a class="btn btn-outline-light" href="https://github.com/Saffiya-7/tanglish-kit#contributing" target="_blank" rel="noopener">Contribute</a>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
-  <section class="code">
-    <h2>Use it in code</h2>
-<pre><code><span class="k">import</span> { tanglishToTamil, tamilToTanglish, tagWords, splitLetters } <span class="k">from</span> <span class="s">'tanglish-kit'</span>;
-
-tanglishToTamil(<span class="s">'vanakkam nanba'</span>);                 <span class="c">// 'வணக்கம் நண்பா'</span>
-tanglishToTamil(<span class="s">'meeting cancel aachu'</span>, { keepEnglish: <span class="k">true</span> });
-                                                  <span class="c">// 'meeting cancel ஆச்சு'</span>
-tamilToTanglish(<span class="s">'நன்றி'</span>);                          <span class="c">// 'nandri'</span>
-tagWords(<span class="s">'office ku late'</span>).map(t =&gt; t.lang);       <span class="c">// ['en', 'tanglish', 'en']</span>
-splitLetters(<span class="s">'தமிழ்'</span>);                              <span class="c">// ['த', 'மி', 'ழ்']  (not 5!)</span></code></pre>
-    <p>Also a CLI: <code>tanglish "vanakkam"</code> · <code>-r</code> reverse · <code>-t</code> tag words · <code>-l</code> letters · <code>-e</code> keep English</p>
-  </section>
-
-  <footer>
-    MIT licensed · Built for the Tamil internet · <a id="gh-link-2" href="#" target="_blank" rel="noopener">Contribute on GitHub</a>
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div class="brand small"><span class="mark" aria-hidden="true">த</span> tanglish-kit</div>
+      <p>MIT licensed · Built for the Tamil internet · <span class="ta">தமிழ் வாழ்க</span></p>
+      <div class="footer-links">
+        <a href="https://github.com/Saffiya-7/tanglish-kit" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/Saffiya-7/tanglish-kit/issues" target="_blank" rel="noopener">Report an issue</a>
+        <a href="#docs">Docs</a>
+      </div>
+    </div>
   </footer>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
 </html>

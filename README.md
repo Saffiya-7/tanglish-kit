@@ -115,7 +115,7 @@ The model is plain JSON trained by [`scripts/train-langid.ts`](scripts/train-lan
 | Evaluation | Result |
 |---|---|
 | Unseen words (deterministic 80/20 split, 214 words) | **97.7%** |
-| Hand-labelled code-mixed sentences (139 tokens), no context | 97.1% |
+| Hand-labelled code-mixed sentences (139 tokens), no context | 99.3% |
 | Same sentences, with neighbour smoothing | **99.3%** |
 
 The sentence evaluation retrains the model with **every word in those sentences removed**, so these are unseen
