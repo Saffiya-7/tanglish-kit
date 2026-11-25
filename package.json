@@ -37,6 +37,11 @@
     "indic",
     "llm"
   ],
+  "homepage": "https://comfy-puppy-3e5a16.netlify.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Saffiya-7/tanglish-kit.git"
+  },
   "license": "MIT",
   "engines": {
     "node": ">=18"

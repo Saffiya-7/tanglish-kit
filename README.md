@@ -7,7 +7,7 @@ phonetic transliteration, reversible romanization, word-level language detection
 ![License: MIT](https://img.shields.io/badge/license-MIT-orange)
 ![Dependencies: 0](https://img.shields.io/badge/dependencies-0-green)
 
-**[▶ Live demo](https://tanglish-kit.netlify.app)**: everything runs in your browser, nothing is uploaded.
+**[▶ Live demo](https://comfy-puppy-3e5a16.netlify.app)**: everything runs in your browser, nothing is uploaded.
 
 ![Demo: Tanglish converted to Tamil, with each word tagged as Tanglish or English](docs/demo.jpg)
 
